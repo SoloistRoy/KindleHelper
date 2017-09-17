@@ -17,6 +17,7 @@ namespace KindleHelper
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new FormSearch());
+            //
         }
     }
 }
