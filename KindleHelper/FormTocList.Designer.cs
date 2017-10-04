@@ -40,7 +40,7 @@
             this.listview_toc.TabIndex = 0;
             this.listview_toc.UseCompatibleStateImageBehavior = false;
             this.listview_toc.View = System.Windows.Forms.View.Details;
-            this.listview_toc.DoubleClick += new System.EventHandler(this.listview_toc_DoubleClick);
+            this.listview_toc.DoubleClick += new System.EventHandler(this.Listview_toc_DoubleClick);
             // 
             // FormTocList
             // 

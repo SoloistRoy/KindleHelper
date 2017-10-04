@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using libZhuishu;
+using GrapchLibrary;
 namespace KindleHelper
 {
     public partial class FormTocList : Form
@@ -15,7 +16,6 @@ namespace KindleHelper
         MixTocInfo mMixToc;
         TocSummmaryInfo[] mTocs;
         Action<int> mCallback;
-
         public FormTocList()
         {
             InitializeComponent();
@@ -36,15 +36,19 @@ namespace KindleHelper
             mCallback = callback;
             listview_toc.BeginUpdate();
             //添加混合源
-            ListViewItem mixTocItem = new ListViewItem();
-            mixTocItem.Text = "混合源";
+            ListViewItem mixTocItem = new ListViewItem()
+            {
+                Text = "混合源"
+            };
             mixTocItem.SubItems.Add(mMixToc.chapters.Length.ToString());
             mixTocItem.SubItems.Add(mMixToc.chapters[mMixToc.chapters.Length - 1].title);
             mixTocItem.SubItems.Add(mMixToc.updated);
             listview_toc.Items.Add(mixTocItem);
             foreach (var toc in tocs) {
-                ListViewItem item = new ListViewItem();
-                item.Text = toc.name;
+                ListViewItem item = new ListViewItem()
+                {
+                    Text = toc.name
+                };
                 item.SubItems.Add(toc.chaptersCount.ToString());
                 item.SubItems.Add(toc.lastChapter);
                 item.SubItems.Add(toc.updated);
@@ -57,7 +61,7 @@ namespace KindleHelper
             
         }
 
-        private void listview_toc_DoubleClick(object sender, EventArgs e)
+        private void Listview_toc_DoubleClick(object sender, EventArgs e)
         {
             if (listview_toc.SelectedIndices.Count > 0 && mCallback != null) {
                 mCallback(listview_toc.SelectedIndices[0]-1);
@@ -102,23 +106,22 @@ namespace KindleHelper
             {
                 ((Action)(delegate ()
                 {
-                    action?.Invoke();
+                    action.Invoke();
                 })).BeginInvoke(null, null);
             }
-            catch (Exception e) { }
+            catch (Exception e) { loglibrary.LogHelper.Error(e); loglibrary.LogHelper.Flush(); }
 
         }
-
         void RunInMainthread(Action action)
         {
             try
             {
                 this.BeginInvoke((Action)(delegate ()
                 {
-                    action?.Invoke();
+                    action.Invoke();
                 }));
             }
-            catch (Exception e) { }
+            catch (Exception e) { loglibrary.LogHelper.Error(e); loglibrary.LogHelper.Flush(); }
 
         }
     }

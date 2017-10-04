@@ -10,7 +10,7 @@ namespace libZhuishu
     public class LibZhuiShu
     {
         /// <summary>
-        /// 搜索小说
+        /// 搜索小说（贪婪式）
         /// </summary>
         /// <param name="query">关键词</param>
         /// <param name="start">结果开始Index</param>
@@ -29,7 +29,7 @@ namespace libZhuishu
             if (ok) {
                 var books = ret["books"];
                 foreach (var book in books) {
-                    QueryBookInfo bookInfo = book.ToObject<QueryBookInfo>();
+                    var bookInfo = book.ToObject<QueryBookInfo>();
                     bookList.Add(bookInfo);
                 }
             }
@@ -67,7 +67,8 @@ namespace libZhuishu
                 TocSummmaryInfo info = summray.ToObject<TocSummmaryInfo>();
                 if (info.name != "优质书源") {
                     infoList.Add(info);
-                }       
+                } 
+                //TODO:添加优质书源支持
             }
             return infoList.ToArray();
         }
@@ -102,7 +103,11 @@ namespace libZhuishu
             }
             return null;
         }
-
+        /// <summary>
+        /// 自动完成
+        /// </summary>
+        /// <param name="query">关键词</param>
+        /// <returns></returns>
         public static string[] autoComplate(string query)
         {
             string[] words = new string[0];
@@ -127,7 +132,7 @@ namespace libZhuishu
         /// <returns>Unix时间戳格式</returns>  
         private static int ConvertDateTimeInt(System.DateTime time)
         {
-            System.DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1));
+            DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new DateTime(1970, 1, 1));
             return (int)(time - startTime).TotalSeconds;
         }
     }

@@ -40,7 +40,7 @@
             this.listview_result.TabIndex = 0;
             this.listview_result.UseCompatibleStateImageBehavior = false;
             this.listview_result.View = System.Windows.Forms.View.Details;
-            this.listview_result.DoubleClick += new System.EventHandler(this.listview_result_DoubleClick);
+            this.listview_result.DoubleClick += new System.EventHandler(this.Listview_result_DoubleClick);
             // 
             // FormSearchResult
             // 

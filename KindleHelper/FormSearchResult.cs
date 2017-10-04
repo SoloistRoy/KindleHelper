@@ -8,14 +8,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using libZhuishu;
-
+using GrapchLibrary;
 namespace KindleHelper
 {
     public partial class FormSearchResult : Form
     {
-
         private QueryBookInfo[] cacheResults;
-
         public FormSearchResult()
         {
             InitializeComponent();
@@ -37,32 +35,45 @@ namespace KindleHelper
 
 
         public void ShowResult(QueryBookInfo[] results)
-        {          
-            if (results == null) return;
-            listview_result.BeginUpdate();
-            foreach (var result in results) {
-                ListViewItem item = new ListViewItem();
-                item.Text = result.title;
-                item.SubItems.Add(result.author);
-                item.SubItems.Add(result.site);
-                item.SubItems.Add(formatWordCount(result.wordCount));
-                if (!string.IsNullOrWhiteSpace(result.retentionRatio)) {
-                    item.SubItems.Add(result.retentionRatio + "%");
-                } else {
-                    item.SubItems.Add("无");
-                }
+        {
+            try
+            {
+                if (results == null) return;
+                listview_result.BeginUpdate();
+                foreach (var result in results)
+                {
+                    ListViewItem item = new ListViewItem()
+                    {
+                        Text = result.title
+                    };
+                    item.SubItems.Add(result.author);
+                    item.SubItems.Add(result.site);
+                    item.SubItems.Add(FormatWordCount(result.wordCount));
+                    if (!string.IsNullOrWhiteSpace(result.retentionRatio))
+                    {
+                        item.SubItems.Add(result.retentionRatio + "%");
+                    }
+                    else
+                    {
+                        item.SubItems.Add("无");
+                    }
 
-                item.SubItems.Add(result.lastChapter);
-                item.SubItems.Add(result.shortIntro);
-                listview_result.Items.Add(item);
+                    item.SubItems.Add(result.lastChapter);
+                    item.SubItems.Add(result.shortIntro);
+                    listview_result.Items.Add(item);
+                }
+                listview_result.EndUpdate();
+                this.Show();
+                cacheResults = results;
             }
-            listview_result.EndUpdate();
-            this.Show();
-            cacheResults = results;
+            catch
+            {
+
+            }
         }
 
 
-        static string formatWordCount(long wordCount)
+        static string FormatWordCount(long wordCount)
         {
             if (wordCount > 10000) {
                 return (wordCount / 10000) + " 万";
@@ -70,7 +81,7 @@ namespace KindleHelper
             return wordCount.ToString();
         }
 
-        private void listview_result_DoubleClick(object sender, EventArgs e)
+        private void Listview_result_DoubleClick(object sender, EventArgs e)
         {
             var lv = listview_result;
             if (lv.SelectedIndices.Count > 0) {
